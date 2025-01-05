@@ -14,8 +14,8 @@ NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # Load datasets
-movies = pd.read_csv("movies_metadata.csv", low_memory=False)
-ratings = pd.read_csv("ratings_small.csv")
+movies = pd.read_csv("GDS/movies_metadata.csv", low_memory=False)
+ratings = pd.read_csv("GDS/ratings_small.csv")
 
 # Preprocess movies metadata
 movies = movies[['id', 'title', 'release_date', 'genres']].dropna()
