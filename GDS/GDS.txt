@@ -1,0 +1,34 @@
+// You don't need to run these on Neo4j database, these are the Cypher queries used in the gds and mentioned here as a reference
+
+// Configuration of Neo4j’s Graph Data Science (GDS) library for collaborative filtering. 
+
+// Create the graph projection for GDS
+CALL gds.graph.project(
+  'movieRecommendationGraph',
+  ['User', 'Movie'],
+  {
+    WATCHED: {
+      type: 'WATCHED',
+      properties: 'rating'
+    }
+  }
+);
+
+// Apply collaborative filtering (User Similarity)
+CALL gds.nodeSimilarity.stream('movieRecommendationGraph')
+YIELD node1, node2, similarity
+RETURN gds.util.asNode(node1).id AS User1, gds.util.asNode(node2).id AS User2, similarity
+ORDER BY similarity DESC
+LIMIT 10;
+
+
+// Apply content-based filtering 
+MATCH (target:Movie {title: "movie_title"})
+MATCH (m:Movie)
+WHERE target <> m
+WITH target, m,
+     apoc.text.jaccardSimilarity(target.genres, m.genres) AS genre_similarity,
+     1.0 / (1.0 + abs(target.release_year - m.release_year)) AS year_similarity
+RETURN m.title AS Recommendation, (genre_similarity + year_similarity) AS score
+ORDER BY score DESC
+LIMIT 10;

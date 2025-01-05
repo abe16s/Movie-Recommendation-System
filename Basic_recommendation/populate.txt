@@ -1,0 +1,179 @@
+//Cypher queries to populate the Neo4j database with data
+// First populate the Neo4j database with these data before running recommendation
+
+// Create Users
+CREATE (u1:User {name: "Alice", age: 25, location: "NY"})
+CREATE (u2:User {name: "Bob", age: 30, location: "SF"})
+CREATE (u3:User {name: "Charlie", age: 35, location: "LA"})
+CREATE (u4:User {name: "Diana", age: 28, location: "Chicago"})
+CREATE (u5:User {name: "Eve", age: 22, location: "Houston"})
+CREATE (u6:User {name: "Frank", age: 40, location: "Seattle"})
+
+
+// Create Genres
+CREATE (g1:Genre {name: "Action"})
+CREATE (g2:Genre {name: "Comedy"})
+CREATE (g3:Genre {name: "Drama"})
+CREATE (g4:Genre {name: "Sci-Fi"})
+CREATE (g5:Genre {name: "Romance"})
+CREATE (g6:Genre {name: "Horror"})
+
+// Create Movies
+CREATE (m1:Movie {title: "Mad Max: Fury Road", genre: "Action", release_year: 2015, rating: 8.1})
+CREATE (m2:Movie {title: "John Wick", genre: "Action", release_year: 2014, rating: 7.4})
+CREATE (m3:Movie {title: "The Dark Knight", genre: "Action", release_year: 2008, rating: 9.0})
+
+CREATE (m4:Movie {title: "The Hangover", genre: "Comedy", release_year: 2009, rating: 7.7})
+CREATE (m5:Movie {title: "Superbad", genre: "Comedy", release_year: 2007, rating: 7.6})
+CREATE (m6:Movie {title: "Step Brothers", genre: "Comedy", release_year: 2008, rating: 6.9})
+
+CREATE (m7:Movie {title: "Forrest Gump", genre: "Drama", release_year: 1994, rating: 8.8})
+CREATE (m8:Movie {title: "The Pursuit of Happyness", genre: "Drama", release_year: 2006, rating: 8.0})
+CREATE (m9:Movie {title: "The Shawshank Redemption", genre: "Drama", release_year: 1994, rating: 9.3})
+
+CREATE (m10:Movie {title: "Interstellar", genre: "Sci-Fi", release_year: 2014, rating: 8.6})
+CREATE (m11:Movie {title: "Inception", genre: "Sci-Fi", release_year: 2010, rating: 8.8})
+CREATE (m12:Movie {title: "The Matrix", genre: "Sci-Fi", release_year: 1999, rating: 8.7})
+
+CREATE (m13:Movie {title: "The Notebook", genre: "Romance", release_year: 2004, rating: 7.8})
+CREATE (m14:Movie {title: "Titanic", genre: "Romance", release_year: 1997, rating: 7.9})
+CREATE (m15:Movie {title: "Pride & Prejudice", genre: "Romance", release_year: 2005, rating: 7.8})
+
+CREATE (m16:Movie {title: "The Conjuring", genre: "Horror", release_year: 2013, rating: 7.5})
+CREATE (m17:Movie {title: "Get Out", genre: "Horror", release_year: 2017, rating: 7.7})
+CREATE (m18:Movie {title: "A Quiet Place", genre: "Horror", release_year: 2018, rating: 7.5})
+
+
+// Link Movies to Genres
+MATCH (m:Movie {genre: "Action"}), (g:Genre {name: "Action"})
+WITH m, g
+CREATE (m)-[:BELONGS_TO]->(g);
+
+MATCH (m:Movie {genre: "Comedy"}), (g:Genre {name: "Comedy"})
+WITH m, g
+CREATE (m)-[:BELONGS_TO]->(g);
+
+MATCH (m:Movie {genre: "Drama"}), (g:Genre {name: "Drama"})
+WITH m, g
+CREATE (m)-[:BELONGS_TO]->(g);
+
+MATCH (m:Movie {genre: "Sci-Fi"}), (g:Genre {name: "Sci-Fi"})
+WITH m, g
+CREATE (m)-[:BELONGS_TO]->(g);
+
+MATCH (m:Movie {genre: "Romance"}), (g:Genre {name: "Romance"})
+WITH m, g
+CREATE (m)-[:BELONGS_TO]->(g);
+
+MATCH (m:Movie {genre: "Horror"}), (g:Genre {name: "Horror"})
+WITH m, g
+CREATE (m)-[:BELONGS_TO]->(g);
+
+
+// Users Watching Movies
+
+// Alice's interactions
+MATCH (u:User {name: "Alice"}), (m:Movie {title: "Mad Max: Fury Road"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 9}]->(m);
+
+MATCH (u:User {name: "Alice"}), (m:Movie {title: "The Hangover"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 7}]->(m);
+
+MATCH (u:User {name: "Alice"}), (m:Movie {title: "Inception"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 8}]->(m);
+
+// Bob's interactions
+MATCH (u:User {name: "Bob"}), (m:Movie {title: "John Wick"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 8}]->(m);
+
+MATCH (u:User {name: "Bob"}), (m:Movie {title: "Superbad"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 7}]->(m);
+
+MATCH (u:User {name: "Bob"}), (m:Movie {title: "The Pursuit of Happyness"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 9}]->(m);
+
+// Charlie's interactions
+MATCH (u:User {name: "Charlie"}), (m:Movie {title: "The Dark Knight"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 10}]->(m);
+
+MATCH (u:User {name: "Charlie"}), (m:Movie {title: "Step Brothers"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 6}]->(m);
+
+MATCH (u:User {name: "Charlie"}), (m:Movie {title: "Interstellar"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 9}]->(m);
+
+// Diana's interactions
+MATCH (u:User {name: "Diana"}), (m:Movie {title: "Forrest Gump"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 9}]->(m);
+
+MATCH (u:User {name: "Diana"}), (m:Movie {title: "Titanic"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 8}]->(m);
+
+MATCH (u:User {name: "Diana"}), (m:Movie {title: "Get Out"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 7}]->(m);
+
+// Eve's interactions
+MATCH (u:User {name: "Eve"}), (m:Movie {title: "The Matrix"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 9}]->(m);
+
+MATCH (u:User {name: "Eve"}), (m:Movie {title: "The Notebook"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 8}]->(m);
+
+MATCH (u:User {name: "Eve"}), (m:Movie {title: "A Quiet Place"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 7}]->(m);
+
+// Frank's interactions
+MATCH (u:User {name: "Frank"}), (m:Movie {title: "The Shawshank Redemption"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 10}]->(m);
+
+MATCH (u:User {name: "Frank"}), (m:Movie {title: "Pride & Prejudice"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 7}]->(m);
+
+MATCH (u:User {name: "Frank"}), (m:Movie {title: "The Conjuring"})
+WITH u, m
+CREATE (u)-[:WATCHED {rating: 8}]->(m);
+
+
+// Add shared movie interactions
+
+// Alice and Bob both watched "Mad Max: Fury Road"
+MATCH (alice:User {name: "Alice"}), (bob:User {name: "Bob"}), (movie:Movie {title: "Mad Max: Fury Road"})
+CREATE (alice)-[:WATCHED {rating: 8}]->(movie),
+       (bob)-[:WATCHED {rating: 7}]->(movie);
+
+// Charlie and Diana both watched "The Dark Knight"
+MATCH (charlie:User {name: "Charlie"}), (diana:User {name: "Diana"}), (movie:Movie {title: "The Dark Knight"})
+CREATE (charlie)-[:WATCHED {rating: 9}]->(movie),
+       (diana)-[:WATCHED {rating: 8}]->(movie);
+
+// Eve and Frank both watched "The Matrix"
+MATCH (eve:User {name: "Eve"}), (frank:User {name: "Frank"}), (movie:Movie {title: "The Matrix"})
+CREATE (eve)-[:WATCHED {rating: 8}]->(movie),
+       (frank)-[:WATCHED {rating: 9}]->(movie);
+
+// Alice and Charlie both watched "Inception"
+MATCH (alice:User {name: "Alice"}), (charlie:User {name: "Charlie"}), (movie:Movie {title: "Inception"})
+CREATE (alice)-[:WATCHED {rating: 9}]->(movie),
+       (charlie)-[:WATCHED {rating: 8}]->(movie);
+
+// Diana and Eve both watched "Titanic"
+MATCH (diana:User {name: "Diana"}), (eve:User {name: "Eve"}), (movie:Movie {title: "Titanic"})
+CREATE (diana)-[:WATCHED {rating: 8}]->(movie),
+       (eve)-[:WATCHED {rating: 7}]->(movie);
