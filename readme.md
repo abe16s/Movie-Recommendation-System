@@ -13,7 +13,7 @@ NEO4J_PASSWORD
 
 ### ```Basic_recommendation``` directory
 
-* ```populate.txt``` Use the Cypher queries to populate your Neo4j database with custom users and movies data.
+* ```populate_cypher.txt``` Use the Cypher queries to populate your Neo4j database with custom users and movies data.
 
 * ```recommendation.py``` defined a ```MovieRecommendationSystem``` class with content_based_recommendation and collaborative_filtering_recommendation.
 
