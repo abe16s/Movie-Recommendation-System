@@ -28,8 +28,6 @@ NEO4J_PASSWORD
 
 * ```gds_cypher.txt``` Cypher queries for creating the graph projection for GDS, use Neo4j’s Graph Data Science (GDS) library for collaborative filtering and content-based filtering as a fallback on Neo4j database.  
 
-* Or alternatively use the ```GDS_setup.py``` for creating  the graph projection for GDS
-
 * ```recommendation.py``` python script for getting recommendation using collaborative filtering as main and content-based as a fallback.
 
 
