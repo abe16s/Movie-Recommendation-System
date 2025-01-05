@@ -37,13 +37,14 @@ def load_movies_and_users():
                 genres=row['genres'],
             )
 
-        # Create users and their relationships
+        # Create users and their relationships with existing movies
         for _, row in ratings.iterrows():
             session.run(
                 """
-                MERGE (u:User {id: $user_id})
-                MERGE (m:Movie {id: $movie_id})
-                CREATE (u)-[:WATCHED {rating: $rating, timestamp: $timestamp}]->(m)
+                MERGE (u:User {id: $user_id})  // Merge user by user_id, creating if necessary
+                WITH u  // Pass user node to the next part of the query
+                MATCH (m:Movie {id: $movie_id})  // Match the existing movie node by movie_id (don't create a new one)
+                CREATE (u)-[:WATCHED {rating: $rating, timestamp: $timestamp}]->(m)  // Create WATCHED relationship
                 """,
                 user_id=row['userId'],
                 movie_id=row['movieId'],
